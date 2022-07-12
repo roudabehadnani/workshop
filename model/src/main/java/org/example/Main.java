@@ -1,6 +1,7 @@
 package org.example;
 
 import java.util.Arrays;
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
@@ -11,21 +12,31 @@ public class Main {
 
 
         int depositPool = 0;
-        VendingMachineProduct vendingMachineProduct =
-                new VendingMachineProduct(new Product[]{drink,snack,candy},depositPool);
-        vendingMachineProduct.addCurrency(100);
-        int a = 1;
-        vendingMachineProduct.request(a);
-        System.out.println("get Balance: " +vendingMachineProduct.getBalance());
-        System.out.println("vendingMachineProduct = " + vendingMachineProduct.getDescription(a));
+        Scanner scanner = new Scanner(System.in);
 
-        int b = 11;
-        vendingMachineProduct.request(11);
-        System.out.println("get Balance: " +vendingMachineProduct.getBalance());
-        System.out.println("vendingMachineProduct = " + vendingMachineProduct.getDescription(b));
-        System.out.println("end session : " + vendingMachineProduct.endSession());
+        VendingMachineProduct vendingMachineProduct = new VendingMachineProduct(new Product[]{drink, snack, candy},depositPool);
 
-        System.out.println("vendingMachineProduct.getProducts().toString() = " + Arrays.toString(vendingMachineProduct.getProducts()));
+        System.out.print(" Pls put money in the machine: ");
+        int money = scanner.nextInt();
+        vendingMachineProduct.addCurrency(money);
+        boolean run = true;
+        while(run) {
+            System.out.println("This is a list of products, pls request a product by choosing the product's id: ");
+            System.out.println("The list of products in detail: " + Arrays.toString(vendingMachineProduct.getProducts()));
+            int getInt = VendingMachineProduct.getIntFromUser();
+            Product i = vendingMachineProduct.request(getInt);
+            int balance = vendingMachineProduct.getBalance();
+            System.out.println("get Balance: " + balance);
+            System.out.println("Do you want to continue?(y/n)");
+            String getString = VendingMachineProduct.getStringFromUser();
+            if (getString.equalsIgnoreCase("n")) {
+                System.out.println("you get back change: " + balance);
+                System.out.println("vendingMachineProduct = " +i.getProductName() );
+                System.out.println("end session : " +vendingMachineProduct.endSession() );
+                run = false;
+            }
+        }
+
     }
 
 }
